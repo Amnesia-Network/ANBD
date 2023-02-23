@@ -120,4 +120,8 @@ public class MusicManager {
 
         return false;
     }
+
+    public void disconnect() {
+        getAudioManager().closeAudioConnection();
+    }
 }

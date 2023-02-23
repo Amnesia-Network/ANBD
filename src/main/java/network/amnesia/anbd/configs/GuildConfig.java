@@ -31,6 +31,10 @@ public class GuildConfig {
         guildConfigDocument.setMusicTextChannelId(musicTextChannel.getIdLong());
     }
 
+    public void setMusicTextChannel(long musicTextChannelId) {
+        guildConfigDocument.setMusicTextChannelId(musicTextChannelId);
+    }
+
     public VoiceChannel getMusicVoiceChannel() {
         if (guildConfigDocument.getMusicVoiceChannelId() == null) return null;
         return Main.getJDA().getVoiceChannelById(guildConfigDocument.getMusicVoiceChannelId());
@@ -38,6 +42,10 @@ public class GuildConfig {
 
     public void setMusicVoiceChannel(VoiceChannel musicVoiceChannel) {
         guildConfigDocument.setMusicVoiceChannelId(musicVoiceChannel.getIdLong());
+    }
+
+    public void setMusicVoiceChannel(long musicVoiceChannelId) {
+        guildConfigDocument.setMusicVoiceChannelId(musicVoiceChannelId);
     }
 
     public void save() {

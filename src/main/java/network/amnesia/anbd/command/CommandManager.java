@@ -36,7 +36,6 @@ public class CommandManager {
                     .addSubcommands(subcommand.getSubcommandData());
         });
 
-
         List<net.dv8tion.jda.api.interactions.commands.Command> jdaCommands =
                 Main.getJDA().updateCommands().addCommands(commandDataSet).complete();
 

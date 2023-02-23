@@ -75,7 +75,7 @@ public class Main {
 
         MusicManager.registerSources();
 
-        getJDA().getPresence().setActivity(Activity.playing("Rapex Legends"));
+        getJDA().getPresence().setActivity(Activity.playing("Candy Crush"));
         LOG.info("ANBD Ready! ({}ms)", System.currentTimeMillis() - APP_START_TIME);
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> shutdown(-1)));

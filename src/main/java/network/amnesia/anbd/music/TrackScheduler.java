@@ -4,6 +4,8 @@ import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.player.event.AudioEventAdapter;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackEndReason;
+import network.amnesia.anbd.Utils;
+import network.amnesia.anbd.configs.ConfigManager;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -71,6 +73,10 @@ public class TrackScheduler extends AudioEventAdapter {
             queue.add(player.getPlayingTrack().makeClone());
         }
         player.startTrack(queue.poll(), false);
+
+        if (queue.isEmpty() && !musicManager.isPlaying()) {
+            musicManager.disconnect();
+        }
     }
 
     @Override
@@ -120,8 +126,10 @@ public class TrackScheduler extends AudioEventAdapter {
 
         TrackInfo trackInfo = TrackInfo.parse(track);
 
-        musicManager.getGuild().getDefaultChannel().asTextChannel().sendMessageEmbeds(trackInfo.getStatusEmbed()).queue();
-    }
+        Utils.firstNonNull(
+                ConfigManager.getGuildConfig(musicManager.getGuild()).getMusicTextChannel(),
+                musicManager.getGuild().getDefaultChannel().asTextChannel()
+        ).sendMessageEmbeds(trackInfo.getStatusEmbed()).queue();    }
 
     public void skipNextNotification() {
         skipNextNotification = true;

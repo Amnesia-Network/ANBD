@@ -55,4 +55,12 @@ public class Utils {
     public static <T> T[] arrayOf(T... objects) {
         return objects;
     }
+
+    @SafeVarargs
+    public static <T> T firstNonNull(T... objects) {
+        for (T object : objects) {
+            if (object != null) return object;
+        }
+        return null;
+    }
 }
