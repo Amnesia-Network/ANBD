@@ -16,7 +16,7 @@ public class CoinFlipCommand extends Command {
         int upperbound = 2;
         int int_random = rand.nextInt(upperbound);
 
-        event.replyFormat(int_random == 0 ? Constants.ANCOIN_TAIL : Constants.ANCOIN_HEAD).queue();
+        event.reply(int_random == 0 ? Constants.ANCOIN_TAIL : Constants.ANCOIN_HEAD).queue();
         return Outcome.SUCCESS;
     }
 }
