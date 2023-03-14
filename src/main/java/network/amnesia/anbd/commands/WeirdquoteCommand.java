@@ -10,7 +10,7 @@ public class WeirdquoteCommand extends Command {
 
     @Override
     public Outcome invoke(SlashCommandInteractionEvent event) {
-        event.replyFormat("This feature will be available in the next update.").setEphemeral(true).queue(); //example
+        event.reply("This feature will be available in the next update.").setEphemeral(true).queue(); //example
         return Outcome.SUCCESS;
     }
 }

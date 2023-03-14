@@ -75,7 +75,7 @@ public class Main {
 
         MusicManager.registerSources();
 
-        getJDA().getPresence().setActivity(Activity.playing("Candy Crush"));
+        getJDA().getPresence().setActivity(Activity.playing("Clash of clans"));
         LOG.info("ANBD Ready! ({}ms)", System.currentTimeMillis() - APP_START_TIME);
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> shutdown(-1)));

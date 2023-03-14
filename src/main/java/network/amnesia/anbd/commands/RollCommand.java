@@ -12,21 +12,21 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-@ICommand(name = "roll", category = CommandCategory.FUN, description = "Roll [amount] dice(s) of [sides]")
+@ICommand(name = "roll", category = CommandCategory.FUN, description = "Roll [amount] dice of [sides]")
 public class RollCommand extends Command {
 
     public Outcome invoke(SlashCommandInteractionEvent event, int amount, int sides) {
 
         if(amount <= 0) {
-            event.replyFormat("Please set positive amount of dices to roll [>0]").setEphemeral(true).queue();
+            event.reply("Please set positive amount of dice to roll [>0]").setEphemeral(true).queue();
             return Outcome.INCORRECT_USAGE;
         }
         if(sides <= 0) {
-            event.replyFormat("Please set a positive number of dice sides [>0]").setEphemeral(true).queue();
+            event.reply("Please set a positive number of die sides [>0]").setEphemeral(true).queue();
             return Outcome.INCORRECT_USAGE;
         }
 
-        String rolls = IntStream.range(1, amount).map(ignored -> ThreadLocalRandom.current().nextInt(sides) + 1).mapToObj(i -> numberToEmote(i, sides)).collect(Collectors.joining(", "));
+        String rolls = IntStream.range(0, amount).map(ignored -> ThreadLocalRandom.current().nextInt(sides) + 1).mapToObj(i -> numberToEmote(i, sides)).collect(Collectors.joining(", "));
 
         event.replyFormat("rolled %d %s of %d: %s.", amount, amount > 1 ? "dice" : "die", sides, rolls).queue();
         return Outcome.SUCCESS;
@@ -34,8 +34,8 @@ public class RollCommand extends Command {
 
     @Override
     public SlashCommandData getCommandData() {
-        return super.getCommandData().addOption(OptionType.INTEGER, "amount", "Amount of dices to roll [>0]", true)
-                                     .addOption(OptionType.INTEGER, "sides", "Number of dice sides to set [>0]", true);
+        return super.getCommandData().addOption(OptionType.INTEGER, "amount", "Amount of dice to roll [>0]", true)
+                                     .addOption(OptionType.INTEGER, "sides", "Number of die sides to set [>0]", true);
     }
 
     private String numberToEmote(int number, int sides) {

@@ -13,7 +13,7 @@ public class SayCommand extends Command {
 
     public Outcome invoke(SlashCommandInteractionEvent event, String message) {
             event.getChannel().sendMessage(message).queue();
-            event.replyFormat("Message sent.").setEphemeral(true).queue();
+            event.reply("Message sent.").setEphemeral(true).queue();
             return Outcome.SUCCESS;
     }
 
