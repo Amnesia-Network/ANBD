@@ -50,7 +50,7 @@ public class CommandManager {
 
     private void handleSlashCommandInteractionEvent(SlashCommandInteractionEvent event) {
         COMMANDS.forEach(command -> {
-            if (!command.getICommand().name().equals(event.getCommandPath())) return;
+            if (!command.getICommand().name().equals(event.getFullCommandName())) return;
             RuntimeStatistics.recordOutcome(command._invoke(event));
         });
     }
