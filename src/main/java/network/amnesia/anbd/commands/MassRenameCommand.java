@@ -19,11 +19,22 @@ public class MassRenameCommand extends Command {
     public Outcome invoke(SlashCommandInteractionEvent event) {
         return invoke(event, null);
     }
+
     public Outcome invoke(SlashCommandInteractionEvent event, String theme) {
         //LOAD VALUES
-        InputStreamReader isr = new InputStreamReader(getClass().getClassLoader().getResourceAsStream("names.csv"));
+        InputStreamReader isr;
+        try {
+            File names = new File("./names.csv");
+            if (theme.equals("__TEST__")) {
+                event.reply(names.getAbsolutePath()).queue();
+                return Outcome.SUCCESS;
+            }
+            isr = new InputStreamReader(new FileInputStream(names));
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
         BufferedReader reader = null;
-        String line = "";
+        String line;
 
         try {
             reader = new BufferedReader(isr);
@@ -39,8 +50,7 @@ public class MassRenameCommand extends Command {
             }
         } catch(Exception e) {
             e.printStackTrace();
-        }
-        finally {
+        } finally {
             try {
                 reader.close();
             } catch (IOException e) {
@@ -55,7 +65,7 @@ public class MassRenameCommand extends Command {
                     member.modifyNickname("").queue();
                 })
             );
-            event.reply("Reset in progress " + LOADING_EMOTE + " (This may take a few seconds).\nWARNING : The bot cannot rename the server owner or users who have a role higher than its own.").setEphemeral(true).queue();
+            event.reply("Reset in progress " + LOADING_EMOTE + " (This may take a few seconds).\nWARNING: The bot cannot rename the server owner or users who have a role higher than its own.").setEphemeral(true).queue();
             return Outcome.SUCCESS;
         }
         //FIND THEME POSITION
@@ -79,7 +89,7 @@ public class MassRenameCommand extends Command {
             event.reply("Theme not found.").setEphemeral(true).queue();
             return Outcome.INCORRECT_USAGE;
         }
-        event.reply("Mass rename in progress " + LOADING_EMOTE + " (This may take a few seconds).\nWARNING : The bot cannot rename the server owner or users who have a role higher than its own.").setEphemeral(true).queue();
+        event.reply("Mass rename in progress " + LOADING_EMOTE + " (This may take a few seconds).\nWARNING: The bot cannot rename the server owner or users who have a role higher than its own.").setEphemeral(true).queue();
         return Outcome.SUCCESS;
     }
     @Override

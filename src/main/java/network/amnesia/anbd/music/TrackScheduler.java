@@ -23,6 +23,8 @@ public class TrackScheduler extends AudioEventAdapter {
 
     private boolean loop;
 
+    private AudioTrack lastPlayedTrack;
+
     private boolean skipNextNotification;
 
     /**
@@ -70,7 +72,7 @@ public class TrackScheduler extends AudioEventAdapter {
         // Start the next track, regardless of if something is already playing or not. In case queue was empty, we are
         // giving null to startTrack, which is a valid argument and will simply stop the player.
         if (isLoop()) {
-            queue.add(player.getPlayingTrack().makeClone());
+            queue.add(lastPlayedTrack.makeClone());
         }
         player.startTrack(queue.poll(), false);
 
@@ -122,6 +124,8 @@ public class TrackScheduler extends AudioEventAdapter {
 
     @Override
     public void onTrackStart(AudioPlayer player, AudioTrack track) {
+        lastPlayedTrack = track;
+
         if (shouldSkipNextNotification()) return;
 
         TrackInfo trackInfo = TrackInfo.parse(track);
