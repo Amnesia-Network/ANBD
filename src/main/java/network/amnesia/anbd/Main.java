@@ -9,6 +9,7 @@ import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
+import network.amnesia.anbd.command.ButtonManager;
 import network.amnesia.anbd.command.CommandManager;
 import network.amnesia.anbd.configs.ConfigManager;
 import network.amnesia.anbd.factories.FactoryFactory;
@@ -24,6 +25,7 @@ public class Main {
     public static final Dotenv DOT_ENV = Dotenv.load();
 
     private static final CommandManager COMMAND_MANAGER = new CommandManager();
+    private static final ButtonManager BUTTON_MANAGER = new ButtonManager();
     private static final JDA JDA;
 
     public static final long APP_START_TIME = System.currentTimeMillis();
@@ -62,6 +64,10 @@ public class Main {
         return COMMAND_MANAGER;
     }
 
+    public static ButtonManager getButtonManager() {
+        return BUTTON_MANAGER;
+    }
+
     public static AudioPlayerManager getAudioPlayerManager() {
         return playerManager;
     }
@@ -75,7 +81,7 @@ public class Main {
 
         MusicManager.registerSources();
 
-        getJDA().getPresence().setActivity(Activity.playing("Sea of Thieves"));
+        getJDA().getPresence().setActivity(Activity.playing("Pokemon Go"));
         LOG.info("ANBD Ready! ({}ms)", System.currentTimeMillis() - APP_START_TIME);
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> shutdown(-1)));
