@@ -8,6 +8,7 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import network.amnesia.anbd.Constants;
 import network.amnesia.anbd.Utils;
+import network.amnesia.anbd.command.Button;
 import network.amnesia.anbd.command.Command;
 
 import java.util.concurrent.CompletableFuture;
@@ -78,7 +79,11 @@ public class LoadResultHandler implements AudioLoadResultHandler {
             eb.addField("Position in queue", String.valueOf(musicManager.getTrackScheduler().queueSize() + (musicManager.getAudioPlayer().getPlayingTrack() == null ? 0 : 1)), true);
         }
 
-        event.getHook().editOriginalEmbeds(eb.build()).queue();
+        event.getHook().editOriginalEmbeds(eb.build()).setActionRow(
+                Button.primary("music-pause", "Pause"),
+                Button.primary("music-skip", "Skip"),
+                Button.danger("music-stop", "Stop")
+        ).queue();
 
         futureOutcome.complete(Command.Outcome.SUCCESS);
     }

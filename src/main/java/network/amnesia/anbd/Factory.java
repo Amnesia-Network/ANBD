@@ -49,5 +49,5 @@ public abstract class Factory<T> {
 
     protected T createInstance(Class<T> clazz) throws ReflectiveOperationException {
         return clazz.getConstructor().newInstance();
-    };
+    }
 }

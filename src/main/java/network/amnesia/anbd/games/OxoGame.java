@@ -13,24 +13,16 @@ import java.util.Random;
 import java.util.Set;
 
 public class OxoGame {
+    private static final Set<OxoGame> GAMES = new HashSet<>();
     private final long player1;
     private final long player2;
+    private final String[] cells = {"1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣", "6️⃣", "7️⃣", "8️⃣", "9️⃣"};
     private InteractionHook gameMessage;
     private long threadChannel;
-
-    private String[] cells = {":one:", ":two:", ":three:", ":four:", ":five:", ":six:", ":seven:", ":eight:", ":nine:"};
     private long playerTurn;
     private String status;
     private int counter = 0;
 
-    public long getThreadChannel() {
-        return threadChannel;
-    }
-
-    public static Set<OxoGame> getGames() {
-        return GAMES;
-    }
-    private static Set<OxoGame> GAMES = new HashSet<>();
     public OxoGame(long player1, long player2) {
         this.player1 = player1;
         this.player2 = player2;
@@ -45,11 +37,20 @@ public class OxoGame {
         GAMES.add(this);
     }
 
-    public void setGameMessage(InteractionHook message) {
-        this.gameMessage = message;
+    public static Set<OxoGame> getGames() {
+        return GAMES;
     }
+
+    public long getThreadChannel() {
+        return threadChannel;
+    }
+
     public void setThreadChannel(long threadChannel) {
         this.threadChannel = threadChannel;
+    }
+
+    public void setGameMessage(InteractionHook message) {
+        this.gameMessage = message;
     }
 
     public MessageEmbed getEmbed() {
@@ -59,24 +60,26 @@ public class OxoGame {
         gameEmbed.addField("Player 1 :o2:", Main.getJDA().retrieveUserById(player1).complete().getAsMention(), true);
         gameEmbed.addField("Player 2 :negative_squared_cross_mark:", Main.getJDA().retrieveUserById(player2).complete().getAsMention(), true);
         gameEmbed.addField(status, "", false);
-        gameEmbed.setColor(1195176);
+        gameEmbed.setColor(0x006cff);
         return gameEmbed.build();
     }
+
     public int valueOfCell(String cell) {
         int value = 0;
-        switch(cell) {
-            case ":one:" -> value = 1;
-            case ":two:" -> value = 2;
-            case ":three:" -> value = 3;
-            case ":four:" -> value = 4;
-            case ":five:" -> value = 5;
-            case ":six:" -> value = 6;
-            case ":seven:" -> value = 7;
-            case ":eight:" -> value = 8;
-            case ":nine:" -> value = 9;
-        };
+        switch (cell) {
+            case "1️⃣" -> value = 1;
+            case "2️⃣" -> value = 2;
+            case "3️⃣" -> value = 3;
+            case "4️⃣" -> value = 4;
+            case "5️⃣" -> value = 5;
+            case "6️⃣" -> value = 6;
+            case "7️⃣" -> value = 7;
+            case "8️⃣" -> value = 8;
+            case "9️⃣" -> value = 9;
+        }
         return value;
     }
+
     private boolean isWin() {
         return (Objects.equals(cells[0], cells[1]) && Objects.equals(cells[1], cells[2])) ||
                 (Objects.equals(cells[3], cells[4]) && Objects.equals(cells[4], cells[5])) ||
@@ -87,36 +90,35 @@ public class OxoGame {
                 (Objects.equals(cells[0], cells[4]) && Objects.equals(cells[4], cells[8])) ||
                 (Objects.equals(cells[2], cells[4]) && Objects.equals(cells[4], cells[6]));
     }
-    public boolean isStringInt(String s)
-    {
-        try
-        {
+
+    public boolean isStringInt(String s) {
+        try {
             Integer.parseInt(s);
             return true;
-        } catch (NumberFormatException ex)
-        {
+        } catch (NumberFormatException ex) {
             return false;
         }
     }
+
     public void onMessageReceived(@NotNull MessageReceivedEvent event) {
 //        if(event.getAuthor().getIdLong() != player1 && event.getAuthor().getIdLong() != player2) {
 //            event.getMessage().delete().queue();
 //            return;
 //        }
-        if(event.getAuthor().getIdLong() == playerTurn) {
+        if (event.getAuthor().getIdLong() == playerTurn) {
             String message = event.getMessage().getContentRaw();
-            if(isStringInt(message)) {
-                if(Integer.parseInt(message) <= 9 && Integer.parseInt(message) >= 1) {
+            if (isStringInt(message)) {
+                if (Integer.parseInt(message) <= 9 && Integer.parseInt(message) >= 1) {
                     int choice = Integer.parseInt(message);
                     String playerEmote = (playerTurn == player1 ? ":o2:" : ":negative_squared_cross_mark:");
                     boolean isFound = false;
-                    for(int i = 0; i < cells.length; i++) {
-                        if((valueOfCell(cells[i]) != 0)) {
-                            if(choice == valueOfCell(cells[i])) {
+                    for (int i = 0; i < cells.length; i++) {
+                        if ((valueOfCell(cells[i]) != 0)) {
+                            if (choice == valueOfCell(cells[i])) {
                                 isFound = true;
                                 counter++;
                                 cells[i] = playerEmote;
-                                if(isWin()) {
+                                if (isWin()) {
                                     status = "The winner is " + Main.getJDA().retrieveUserById(playerTurn).complete().getName();
                                     gameMessage.editOriginalEmbeds(getEmbed()).complete();
                                     event.getMessage().replyEmbeds(getEmbed()).complete();
@@ -124,7 +126,7 @@ public class OxoGame {
                                     GAMES.remove(this);
                                     return;
                                 }
-                                if(counter == 9) { //DRAW
+                                if (counter == 9) { //DRAW
                                     status = "DRAW !";
                                     gameMessage.editOriginalEmbeds(getEmbed()).complete();
                                     event.getMessage().replyEmbeds(getEmbed()).complete();
@@ -140,7 +142,9 @@ public class OxoGame {
                             }
                         }
                     }
-                    if(!isFound) {event.getMessage().replyFormat("Put on your glasses, this is not an available space.").queue();}
+                    if (!isFound) {
+                        event.getMessage().replyFormat("Put on your glasses, this is not an available space.").queue();
+                    }
                 } else {
                     event.getMessage().replyFormat("Your choice must be between 1 and 9.").queue();
                 }

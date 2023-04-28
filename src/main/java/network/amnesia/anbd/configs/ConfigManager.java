@@ -53,5 +53,6 @@ public class ConfigManager {
         jsonDBTemplate.upsert(config);
     }
 
-    public static void noop() {}
+    public static void noop() {
+    }
 }

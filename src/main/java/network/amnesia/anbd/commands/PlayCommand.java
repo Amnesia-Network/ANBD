@@ -5,6 +5,7 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.SlashCommandData;
 import network.amnesia.anbd.Constants;
+import network.amnesia.anbd.command.Button;
 import network.amnesia.anbd.command.Command;
 import network.amnesia.anbd.command.CommandCategory;
 import network.amnesia.anbd.command.ICommand;
@@ -29,7 +30,11 @@ public class PlayCommand extends Command {
         }
 
         musicManager.getAudioPlayer().setPaused(false);
-        event.replyEmbeds(TrackInfo.parse(musicManager.getAudioPlayer().getPlayingTrack()).getStatusEmbed()).queue();
+        event.replyEmbeds(TrackInfo.parse(musicManager.getAudioPlayer().getPlayingTrack()).getStatusEmbed()).setActionRow(
+                Button.primary("music-pause", "Pause"),
+                Button.primary("music-skip", "Skip"),
+                Button.danger("music-stop", "Stop")
+        ).queue();
 
         return Outcome.SUCCESS;
     }

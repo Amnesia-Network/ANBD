@@ -29,8 +29,8 @@ public class RuntimeStatistics {
         });
 
         Arrays.asList(Utils.formatTableForLogging("Command Outcomes",
-                                Utils.arrayOf("Outcome", "Amount", "Percentage"),
-                                data.toArray(new String[data.size()][]))
-                        .split("\n")).forEach(LOG::info);
+                        Utils.arrayOf("Outcome", "Amount", "Percentage"),
+                        data.toArray(new String[data.size()][]))
+                .split("\n")).forEach(LOG::info);
     }
 }

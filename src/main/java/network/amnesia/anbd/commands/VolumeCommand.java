@@ -13,7 +13,6 @@ import network.amnesia.anbd.music.MusicManager;
 @ICommand(name = "volume", category = CommandCategory.MUSIC, description = "Set the music volume")
 public class VolumeCommand extends Command {
 
-
     public Outcome invoke(SlashCommandInteractionEvent event, int volume) {
         MusicManager musicManager = MusicManager.forGuild(event.getGuild());
 
@@ -23,10 +22,10 @@ public class VolumeCommand extends Command {
         }
 
         if (volume < 0 || (volume > 200 && !event.getMember().hasPermission(Permission.MANAGE_CHANNEL))) {
-            event.replyFormat("Please set volume between [0-200]").setEphemeral(true).queue();
+            event.reply("Please set volume between [0-200]").setEphemeral(true).queue();
             return Outcome.INCORRECT_USAGE;
         } else if (volume > 1000) {
-            event.replyFormat("Please set volume between [0-1000]").setEphemeral(true).queue();
+            event.reply("Please set volume between [0-1000]").setEphemeral(true).queue();
             return Outcome.INCORRECT_USAGE;
         }
 

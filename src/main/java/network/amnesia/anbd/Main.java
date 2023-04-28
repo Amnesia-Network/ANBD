@@ -21,14 +21,12 @@ import java.util.concurrent.CountDownLatch;
 
 public class Main {
 
-    private static final Logger LOG = LogManager.getLogger();
     public static final Dotenv DOT_ENV = Dotenv.load();
-
+    public static final long APP_START_TIME = System.currentTimeMillis();
+    private static final Logger LOG = LogManager.getLogger();
     private static final CommandManager COMMAND_MANAGER = new CommandManager();
     private static final ButtonManager BUTTON_MANAGER = new ButtonManager();
     private static final JDA JDA;
-
-    public static final long APP_START_TIME = System.currentTimeMillis();
     private static final CountDownLatch JDAReady = new CountDownLatch(1);
 
     private static final AudioPlayerManager playerManager = new DefaultAudioPlayerManager();
@@ -41,6 +39,7 @@ public class Main {
         builder.setActivity(Activity.playing("Starting..."));
         builder.enableCache(CacheFlag.VOICE_STATE);
         builder.enableIntents(GatewayIntent.MESSAGE_CONTENT);
+        builder.enableIntents(GatewayIntent.GUILD_MEMBERS);
 
         JDA = builder.build();
     }
@@ -49,6 +48,7 @@ public class Main {
         if (JDAReady.getCount() == 0) throw new IllegalStateException("Main#ready was already ready");
         JDAReady.countDown();
     }
+
     private static void load() {
 
         if (!new FactoryFactory().register()) {
@@ -81,7 +81,7 @@ public class Main {
 
         MusicManager.registerSources();
 
-        getJDA().getPresence().setActivity(Activity.playing("Pokemon Go"));
+        getJDA().getPresence().setActivity(Activity.playing("PUBG"));
         LOG.info("ANBD Ready! ({}ms)", System.currentTimeMillis() - APP_START_TIME);
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> shutdown(-1)));

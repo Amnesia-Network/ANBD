@@ -15,7 +15,6 @@ import network.amnesia.anbd.music.TrackInfo;
 @ICommand(name = "seek", category = CommandCategory.MUSIC, description = "Seek to position in playing song")
 public class SeekCommand extends Command {
 
-
     public Outcome invoke(SlashCommandInteractionEvent event, String timestamp) {
         MusicManager musicManager = MusicManager.forGuild(event.getGuild());
 
@@ -47,9 +46,9 @@ public class SeekCommand extends Command {
             EmbedBuilder eb = new EmbedBuilder(TrackInfo.parse(musicManager.getAudioPlayer().getPlayingTrack()).getStatusEmbed());
 
             eb.setTitle(String.format("%s [%s/%s]",
-                    musicManager.getAudioPlayer().getPlayingTrack().getInfo().title,
-                    Utils.formatTime(time),
-                    Utils.formatTime(musicManager.getAudioPlayer().getPlayingTrack().getDuration())),
+                            musicManager.getAudioPlayer().getPlayingTrack().getInfo().title,
+                            Utils.formatTime(time),
+                            Utils.formatTime(musicManager.getAudioPlayer().getPlayingTrack().getDuration())),
                     musicManager.getAudioPlayer().getPlayingTrack().getInfo().uri);
 
             event.getHook().editOriginalEmbeds(eb.build()).queue();

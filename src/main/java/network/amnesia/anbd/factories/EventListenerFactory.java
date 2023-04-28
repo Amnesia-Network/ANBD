@@ -8,7 +8,7 @@ import network.amnesia.anbd.exceptions.ReflectiveOperationRuntimeException;
 public class EventListenerFactory extends Factory<ListenerAdapter> {
 
     public boolean register() {
-        try  {
+        try {
             Main.getJDA().addEventListener(load("network.amnesia.anbd.eventlisteners").toArray());
         } catch (ReflectiveOperationRuntimeException e) {
             return false;

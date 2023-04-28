@@ -4,7 +4,7 @@ import io.jsondb.annotation.Document;
 import io.jsondb.annotation.Id;
 
 
-@Document(collection = "guild-configs", schemaVersion= "1.0")
+@Document(collection = "guild-configs", schemaVersion = "1.0")
 public class GuildConfigDocument {
 
     @Id
@@ -14,7 +14,8 @@ public class GuildConfigDocument {
 
     private String hangmanGameData;
 
-    GuildConfigDocument() {}
+    GuildConfigDocument() {
+    }
 
     public GuildConfigDocument(Long guildId) {
         this.guildId = guildId;

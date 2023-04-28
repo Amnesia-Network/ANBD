@@ -5,6 +5,7 @@ import com.sedmelluq.discord.lavaplayer.player.event.AudioEventAdapter;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackEndReason;
 import network.amnesia.anbd.Utils;
+import network.amnesia.anbd.command.Button;
 import network.amnesia.anbd.configs.ConfigManager;
 
 import java.util.ArrayList;
@@ -77,6 +78,7 @@ public class TrackScheduler extends AudioEventAdapter {
         player.startTrack(queue.poll(), false);
 
         if (queue.isEmpty() && !musicManager.isPlaying()) {
+            musicManager.getAudioPlayer().setVolume(100);
             musicManager.disconnect();
         }
     }
@@ -99,7 +101,7 @@ public class TrackScheduler extends AudioEventAdapter {
     public long getQueueDuration() {
         return queue.stream().mapToLong(AudioTrack::getDuration).sum()
                 + (player.getPlayingTrack() == null ? 0 :
-                   (player.getPlayingTrack().getDuration() - player.getPlayingTrack().getPosition()));
+                (player.getPlayingTrack().getDuration() - player.getPlayingTrack().getPosition()));
     }
 
     public int queueSize() {
@@ -133,7 +135,12 @@ public class TrackScheduler extends AudioEventAdapter {
         Utils.firstNonNull(
                 ConfigManager.getGuildConfig(musicManager.getGuild()).getMusicTextChannel(),
                 musicManager.getGuild().getDefaultChannel().asTextChannel()
-        ).sendMessageEmbeds(trackInfo.getStatusEmbed()).queue();    }
+        ).sendMessageEmbeds(trackInfo.getStatusEmbed()).setActionRow(
+                Button.primary("music-pause", "Pause"),
+                Button.primary("music-skip", "Skip"),
+                Button.danger("music-stop", "Stop")
+        ).queue();
+    }
 
     public void skipNextNotification() {
         skipNextNotification = true;
