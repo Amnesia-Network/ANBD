@@ -16,7 +16,7 @@ public class OxoCommand extends Command {
 
     public Outcome invoke(SlashCommandInteractionEvent event, User user) {
 
-        if(event.getChannel().getType().isThread()) {
+        if (event.getChannel().getType().isThread()) {
             event.reply("You can't play in a ThreadChannel.").setEphemeral(true).queue();
             return Outcome.INCORRECT_USAGE;
         }
@@ -24,7 +24,7 @@ public class OxoCommand extends Command {
         long player1Id = event.getUser().getIdLong();
         long player2Id = user.getIdLong();
 
-        if(player1Id == player2Id) {
+        if (player1Id == player2Id) {
             event.reply("You can't play with yourself.").setEphemeral(true).queue();
             return Outcome.INCORRECT_USAGE;
         }

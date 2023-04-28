@@ -22,6 +22,7 @@ public class StopCommand extends Command {
         musicManager.getAudioPlayer().stopTrack();
         musicManager.getTrackScheduler().getQueue().clear();
         musicManager.getTrackScheduler().setLoop(false);
+        musicManager.getAudioPlayer().setVolume(100);
         musicManager.getAudioManager().closeAudioConnection();
         event.replyFormat(":stop_button: Music player stopped").queue();
         return Outcome.SUCCESS;

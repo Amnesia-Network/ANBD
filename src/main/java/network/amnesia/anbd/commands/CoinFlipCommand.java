@@ -1,10 +1,10 @@
 package network.amnesia.anbd.commands;
 
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
+import network.amnesia.anbd.Constants;
 import network.amnesia.anbd.command.Command;
 import network.amnesia.anbd.command.CommandCategory;
 import network.amnesia.anbd.command.ICommand;
-import network.amnesia.anbd.Constants;
 
 import java.util.Random;
 

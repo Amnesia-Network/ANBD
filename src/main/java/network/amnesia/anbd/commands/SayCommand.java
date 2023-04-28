@@ -1,6 +1,5 @@
 package network.amnesia.anbd.commands;
 
-import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.SlashCommandData;
@@ -12,9 +11,9 @@ import network.amnesia.anbd.command.ICommand;
 public class SayCommand extends Command {
 
     public Outcome invoke(SlashCommandInteractionEvent event, String message) {
-            event.getChannel().sendMessage(message).queue();
-            event.reply("Message sent.").setEphemeral(true).queue();
-            return Outcome.SUCCESS;
+        event.getChannel().sendMessage(message).queue();
+        event.reply("Message sent.").setEphemeral(true).queue();
+        return Outcome.SUCCESS;
     }
 
     @Override

@@ -36,9 +36,9 @@ public class QueueCommand extends Command {
 
         eb.setAuthor(String.format("Queue%s", musicManager.getTrackScheduler().isLoop() ? " \uD83D\uDD01" : "")); // 🔁
         eb.setTitle(String.format("%s [%s/%s]",
-                musicManager.getAudioPlayer().getPlayingTrack().getInfo().title,
-                Utils.formatTime(musicManager.getAudioPlayer().getPlayingTrack().getPosition()),
-                Utils.formatTime(musicManager.getAudioPlayer().getPlayingTrack().getDuration())),
+                        musicManager.getAudioPlayer().getPlayingTrack().getInfo().title,
+                        Utils.formatTime(musicManager.getAudioPlayer().getPlayingTrack().getPosition()),
+                        Utils.formatTime(musicManager.getAudioPlayer().getPlayingTrack().getDuration())),
                 musicManager.getAudioPlayer().getPlayingTrack().getInfo().uri);
         eb.setThumbnail(TrackInfo.parse(musicManager.getAudioPlayer().getPlayingTrack()).getImage());
 

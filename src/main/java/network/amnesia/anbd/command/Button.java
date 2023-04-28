@@ -45,7 +45,7 @@ public class Button extends ButtonImpl {
     }
 
     @Nonnull
-    static Button primary(@Nonnull String id, @Nonnull String label)
+    public static Button primary(@Nonnull String id, @Nonnull String label)
     {
         Checks.notEmpty(id, "Id");
         Checks.notEmpty(label, "Label");
@@ -55,7 +55,7 @@ public class Button extends ButtonImpl {
     }
     
     @Nonnull
-    static Button primary(@Nonnull String id, @Nonnull Emoji emoji)
+    public static Button primary(@Nonnull String id, @Nonnull Emoji emoji)
     {
         Checks.notEmpty(id, "Id");
         Checks.notNull(emoji, "Emoji");
@@ -65,7 +65,7 @@ public class Button extends ButtonImpl {
 
     
     @Nonnull
-    static Button secondary(@Nonnull String id, @Nonnull String label)
+    public static Button secondary(@Nonnull String id, @Nonnull String label)
     {
         Checks.notEmpty(id, "Id");
         Checks.notEmpty(label, "Label");
@@ -75,7 +75,7 @@ public class Button extends ButtonImpl {
     }
 
     @Nonnull
-    static Button secondary(@Nonnull String id, @Nonnull Emoji emoji)
+    public static Button secondary(@Nonnull String id, @Nonnull Emoji emoji)
     {
         Checks.notEmpty(id, "Id");
         Checks.notNull(emoji, "Emoji");
@@ -84,7 +84,7 @@ public class Button extends ButtonImpl {
     }
 
     @Nonnull
-    static Button success(@Nonnull String id, @Nonnull String label)
+    public static Button success(@Nonnull String id, @Nonnull String label)
     {
         Checks.notEmpty(id, "Id");
         Checks.notEmpty(label, "Label");
@@ -94,7 +94,7 @@ public class Button extends ButtonImpl {
     }
 
     @Nonnull
-    static Button success(@Nonnull String id, @Nonnull Emoji emoji)
+    public static Button success(@Nonnull String id, @Nonnull Emoji emoji)
     {
         Checks.notEmpty(id, "Id");
         Checks.notNull(emoji, "Emoji");
@@ -103,7 +103,7 @@ public class Button extends ButtonImpl {
     }
 
     @Nonnull
-    static Button danger(@Nonnull String id, @Nonnull String label)
+    public static Button danger(@Nonnull String id, @Nonnull String label)
     {
         Checks.notEmpty(id, "Id");
         Checks.notEmpty(label, "Label");
@@ -113,7 +113,7 @@ public class Button extends ButtonImpl {
     }
 
     @Nonnull
-    static Button danger(@Nonnull String id, @Nonnull Emoji emoji)
+    public static Button danger(@Nonnull String id, @Nonnull Emoji emoji)
     {
         Checks.notEmpty(id, "Id");
         Checks.notNull(emoji, "Emoji");
@@ -122,7 +122,7 @@ public class Button extends ButtonImpl {
     }
 
     @Nonnull
-    static Button link(@Nonnull String url, @Nonnull String label)
+    public static Button link(@Nonnull String url, @Nonnull String label)
     {
         Checks.notEmpty(url, "URL");
         Checks.notEmpty(label, "Label");
@@ -132,7 +132,7 @@ public class Button extends ButtonImpl {
     }
 
     @Nonnull
-    static Button link(@Nonnull String url, @Nonnull Emoji emoji)
+    public static Button link(@Nonnull String url, @Nonnull Emoji emoji)
     {
         Checks.notEmpty(url, "URL");
         Checks.notNull(emoji, "Emoji");
@@ -141,7 +141,7 @@ public class Button extends ButtonImpl {
     }
 
     @Nonnull
-    static Button of(@Nonnull ButtonStyle style, @Nonnull String idOrUrl, @Nonnull String label)
+    public static Button of(@Nonnull ButtonStyle style, @Nonnull String idOrUrl, @Nonnull String label)
     {
         Checks.check(style != ButtonStyle.UNKNOWN, "Cannot make button with unknown style!");
         Checks.notNull(style, "Style");
@@ -155,7 +155,7 @@ public class Button extends ButtonImpl {
     }
 
     @Nonnull
-    static Button of(@Nonnull ButtonStyle style, @Nonnull String idOrUrl, @Nonnull Emoji emoji)
+    public static Button of(@Nonnull ButtonStyle style, @Nonnull String idOrUrl, @Nonnull Emoji emoji)
     {
         Checks.check(style != ButtonStyle.UNKNOWN, "Cannot make button with unknown style!");
         Checks.notNull(style, "Style");
@@ -168,7 +168,7 @@ public class Button extends ButtonImpl {
     }
 
     @Nonnull
-    static Button of(@Nonnull ButtonStyle style, @Nonnull String idOrUrl, @javax.annotation.Nullable String label, @javax.annotation.Nullable Emoji emoji)
+    public static Button of(@Nonnull ButtonStyle style, @Nonnull String idOrUrl, @javax.annotation.Nullable String label, @javax.annotation.Nullable Emoji emoji)
     {
         if (label != null)
             return of(style, idOrUrl, label).withEmoji(emoji);

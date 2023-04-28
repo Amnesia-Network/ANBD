@@ -34,10 +34,6 @@ public class MusicManager {
      */
     private final TrackScheduler scheduler;
 
-    public static MusicManager forGuild(Guild guild) {
-        return GUILDS.computeIfAbsent(guild, MusicManager::new);
-    }
-
     private MusicManager(Guild guild) {
         this.guild = guild;
 
@@ -48,7 +44,11 @@ public class MusicManager {
         guild.getAudioManager().setSendingHandler(getSendHandler());
     }
 
-    public static void registerSources()  {
+    public static MusicManager forGuild(Guild guild) {
+        return GUILDS.computeIfAbsent(guild, MusicManager::new);
+    }
+
+    public static void registerSources() {
         AudioSourceManagers.registerLocalSource(Main.getAudioPlayerManager());
 
         Main.getAudioPlayerManager().registerSourceManager(new YoutubeAudioSourceManager(true, Main.DOT_ENV.get("YOUTUBE_AUTH_EMAIL"), Main.DOT_ENV.get("YOUTUBE_AUTH_PASSWORD")));
@@ -59,6 +59,10 @@ public class MusicManager {
         Main.getAudioPlayerManager().registerSourceManager(new BeamAudioSourceManager());
         Main.getAudioPlayerManager().registerSourceManager(new GetyarnAudioSourceManager());
         Main.getAudioPlayerManager().registerSourceManager(new HttpAudioSourceManager(MediaContainerRegistry.DEFAULT_REGISTRY));
+    }
+
+    public static AudioPlayerManager getAudioPlayerManager() {
+        return Main.getAudioPlayerManager();
     }
 
     public Guild getGuild() {
@@ -82,10 +86,6 @@ public class MusicManager {
 
     public TrackScheduler getTrackScheduler() {
         return scheduler;
-    }
-
-    public static AudioPlayerManager getAudioPlayerManager() {
-        return Main.getAudioPlayerManager();
     }
 
     public AudioManager getAudioManager() {

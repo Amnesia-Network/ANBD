@@ -12,6 +12,7 @@ import java.util.Set;
 
 public class HangmanGame {
 
+    private static final Set<HangmanGame> GAMES = new HashSet<>();
     private final String word;
     private String hiddenWord;
     private String gameIllustration;
@@ -20,48 +21,47 @@ public class HangmanGame {
     private int errorsCounter = 0;
     private String errorsLetters = "";
     private String letters = "";
-
     private InteractionHook gameMessage;
     private long threadChannel;
-
-    public long getThreadChannel() {
-        return threadChannel;
-    }
-
-    public static Set<HangmanGame> getGames() {
-        return GAMES;
-    }
-    private static Set<HangmanGame> GAMES = new HashSet<>();
 
     public HangmanGame(String word) {
         this.word = word;
         hiddenWord = word.trim().replaceAll("[^ 0-9-]", "◉");
         updateGameIllustration();
         status = "Game in progress";
-        colorCode = 1195176;
+        colorCode = 0x006cff;
 
         GAMES.add(this);
+    }
+
+    public static Set<HangmanGame> getGames() {
+        return GAMES;
+    }
+
+    public long getThreadChannel() {
+        return threadChannel;
+    }
+
+    public void setThreadChannel(long threadChannel) {
+        this.threadChannel = threadChannel;
     }
 
     public void setGameMessage(InteractionHook message) {
         this.gameMessage = message;
     }
-    public void setThreadChannel(long threadChannel) {
-        this.threadChannel = threadChannel;
-    }
 
     public MessageEmbed getEmbed() {
         EmbedBuilder gameEmbed = new EmbedBuilder();
         gameEmbed.setTitle("Game of Hangman");
-        gameEmbed.setDescription(gameIllustration  + "\nGuess any letter in the word.\n" + hiddenWord.replace(" ", ":black_large_square:") + "\n");
-        gameEmbed.addField("Errors :" , errorsLetters, true);
+        gameEmbed.setDescription(gameIllustration + "\nGuess any letter in the word.\n" + hiddenWord.replace(" ", ":black_large_square:") + "\n");
+        gameEmbed.addField("Errors :", errorsLetters, true);
         gameEmbed.addField(status, "", false);
         gameEmbed.setColor(colorCode);
         return gameEmbed.build();
     }
 
     public void updateGameIllustration() {
-        gameIllustration = switch(errorsCounter) {
+        gameIllustration = switch (errorsCounter) {
             case 0 -> """
                     ```
                       _____________
@@ -157,12 +157,12 @@ public class HangmanGame {
     }
 
     public void onMessageReceived(@NotNull MessageReceivedEvent event) {
-        if(event.getMessage().getContentRaw().trim().length() == 1) {
+        if (event.getMessage().getContentRaw().trim().length() == 1) {
             String letter = event.getMessage().getContentRaw().toUpperCase();
-            if(word.contains(letter)) {
+            if (word.contains(letter)) {
                 letters += letter;
                 hiddenWord = word.trim().replaceAll("[^ 0-9-" + letters + "]", "◉");
-                if(Objects.equals(word, hiddenWord)) { //WIN
+                if (Objects.equals(word, hiddenWord)) { //WIN
                     status = "WIN !";
                     colorCode = 5763719;
                     GAMES.remove(this);
@@ -171,7 +171,7 @@ public class HangmanGame {
                 errorsCounter++;
                 errorsLetters += (errorsLetters.length() != 0 ? ", " : "") + letter;
                 updateGameIllustration();
-                if(errorsCounter == 7) { //DEFEAT
+                if (errorsCounter == 7) { //DEFEAT
                     status = "DEFEAT !";
                     hiddenWord = word;
                     colorCode = 15548997;

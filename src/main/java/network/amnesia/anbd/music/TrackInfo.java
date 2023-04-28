@@ -12,19 +12,31 @@ public class TrackInfo {
     private final AudioTrack track;
     private final OpenGraph openGraph;
 
-    public static TrackInfo parse(AudioTrack track) {
-        return new TrackInfo(track);
-    }
-
     private TrackInfo(AudioTrack track) {
         this.track = track;
 
         OpenGraph temp = null;
         try {
-            if (track.getInfo().uri.contains("youtube.com") || track.getInfo().uri.contains("soundcloud.com") || track.getInfo().uri.contains("twitch.tv")) temp = new OpenGraph(track.getInfo().uri, true);
-        } catch (Exception ignored) {}
+            if (track.getInfo().uri.contains("youtube.com") || track.getInfo().uri.contains("soundcloud.com") || track.getInfo().uri.contains("twitch.tv"))
+                temp = new OpenGraph(track.getInfo().uri, true);
+        } catch (Exception ignored) {
+        }
 
         openGraph = temp;
+    }
+
+    public static TrackInfo parse(AudioTrack track) {
+        return new TrackInfo(track);
+    }
+
+    private static String unescapeHTML(String string) {
+        return string.replaceAll("&amp;", "&")
+                .replaceAll("&quot;", "\"")
+                .replaceAll("&apos;", "'")
+                .replaceAll("&#39;", "'")
+                .replaceAll("&lt;", "<")
+                .replaceAll("&gt;", ">")
+                .replaceAll("&num;", "#");
     }
 
     public String getImage() {
@@ -41,18 +53,8 @@ public class TrackInfo {
         return openGraph != null;
     }
 
-    private static String unescapeHTML(String string) {
-        return string.replaceAll("&amp;", "&")
-                .replaceAll("&quot;", "\"")
-                .replaceAll("&apos;", "'")
-                .replaceAll("&#39;", "'")
-                .replaceAll("&lt;", "<")
-                .replaceAll("&gt;", ">")
-                .replaceAll("&num;", "#");
-    }
-
     public MessageEmbed getStatusEmbed() {
-        return getStatusEmbed( null, false);
+        return getStatusEmbed(null, false);
     }
 
     public MessageEmbed getStatusEmbed(boolean addedToQueue) {
@@ -77,7 +79,7 @@ public class TrackInfo {
             eb.addField("Playlist", String.format("%s (%d)", playlist.getName(), playlist.getTracks().size()), true);
         }
 
-        eb.setColor(1195176);
+        eb.setColor(0x006cff);
 
         return eb.build();
     }

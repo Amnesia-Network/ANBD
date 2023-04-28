@@ -15,19 +15,20 @@ public class AvatarCommand extends Command {
     public Outcome invoke(SlashCommandInteractionEvent event) {
         return invoke(event, null);
     }
+
     public Outcome invoke(SlashCommandInteractionEvent event, User user) {
 
-        if(user == null) {
+        if (user == null) {
             user = event.getUser();
         }
         String userAvatarUrl = user.getAvatarUrl();
         String userName = user.getAsTag();
 
         EmbedBuilder embed = new EmbedBuilder();
-        embed.addField("Username" , userName, false);
+        embed.addField("Username", userName, false);
         embed.addField("Avatar Url", userAvatarUrl == null ? "This user has no avatar" : userAvatarUrl + "?size=2048", false);
         embed.setThumbnail(userAvatarUrl);
-        embed.setColor(1195176);
+        embed.setColor(0x006cff);
 
         event.replyEmbeds(embed.build()).queue();
         return Outcome.SUCCESS;

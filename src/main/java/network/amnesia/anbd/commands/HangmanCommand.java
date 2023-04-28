@@ -22,7 +22,7 @@ public class HangmanCommand extends Command {
     }
     public Outcome invoke(SlashCommandInteractionEvent event, String word) {
         if(event.getChannel().getType().isThread()) {
-            event.reply("You can't play in a ThreadChannel.").setEphemeral(true).queue();
+            event.replyFormat("You can't play in a ThreadChannel.").setEphemeral(true).queue();
             return Outcome.INCORRECT_USAGE;
         }
 

@@ -1,20 +1,25 @@
 package network.amnesia.anbd.commands;
 
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
+import net.dv8tion.jda.api.exceptions.ErrorResponseException;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.SlashCommandData;
-import network.amnesia.anbd.Main;
 import network.amnesia.anbd.command.Command;
 import network.amnesia.anbd.command.CommandCategory;
 import network.amnesia.anbd.command.ICommand;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Objects;
 
 import static network.amnesia.anbd.Constants.LOADING_EMOTE;
 
 @ICommand(name = "massrename", category = CommandCategory.MODERATION, description = "Mass Rename from a theme column (without theme -> reset)", restricted = true)
 public class MassRenameCommand extends Command {
+
+    private final ArrayList<String[]> values = new ArrayList<String[]>();
+    private String[] headers = {};
+    private int themePos = -1;
 
     public Outcome invoke(SlashCommandInteractionEvent event) {
         return invoke(event, null);
@@ -25,12 +30,13 @@ public class MassRenameCommand extends Command {
         InputStreamReader isr;
         try {
             File names = new File("./names.csv");
-            if (theme.equals("__TEST__")) {
+            if (Objects.equals(theme, "__TEST__")) {
                 event.reply(names.getAbsolutePath()).queue();
                 return Outcome.SUCCESS;
             }
             isr = new InputStreamReader(new FileInputStream(names));
         } catch (FileNotFoundException e) {
+            event.reply("File ./names.csv not found").setEphemeral(true).queue();
             throw new RuntimeException(e);
         }
         BufferedReader reader = null;
@@ -39,16 +45,16 @@ public class MassRenameCommand extends Command {
         try {
             reader = new BufferedReader(isr);
             boolean isFirst = true;
-            while((line = reader.readLine()) != null) {
+            while ((line = reader.readLine()) != null) {
                 String[] row = line.split(",");
-                if(isFirst) {
+                if (isFirst) {
                     headers = row;
                     isFirst = false;
                     continue;
                 }
                 values.add(row);
             }
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         } finally {
             try {
@@ -58,32 +64,46 @@ public class MassRenameCommand extends Command {
             }
         }
         //END OF LOAD
-        if(theme == null) {
+        if (theme == null) {
             //MASS RENAME RESET
             values.forEach(l ->
-                event.getGuild().retrieveMemberById(Long.parseLong(l[0])).queue(member -> {
-                    member.modifyNickname("").queue();
-                })
+                    {
+                        try {
+                            event.getGuild().retrieveMemberById(Long.parseLong(l[0])).queue(member -> {
+                                if (!member.isOwner() && event.getGuild().getSelfMember().getRoles().get(0).getPosition() >= member.getRoles().get(0).getPosition()) {
+                                    member.modifyNickname("").queue();
+                                }
+                            });
+                        } catch (ErrorResponseException e) {
+                            System.out.println("Unknown Member");
+                        }
+                    }
             );
             event.reply("Reset in progress " + LOADING_EMOTE + " (This may take a few seconds).\nWARNING: The bot cannot rename the server owner or users who have a role higher than its own.").setEphemeral(true).queue();
             return Outcome.SUCCESS;
         }
         //FIND THEME POSITION
         int counter = 0;
-        for(String s : headers) {
-            if(s.equalsIgnoreCase(theme)) {
+        for (String s : headers) {
+            if (s.equalsIgnoreCase(theme)) {
                 themePos = counter;
             }
             counter++;
         }
         //MASS RENAME BY THEME
-        if(themePos != 00) {
+        if (themePos != -1) {
             values.forEach(l ->
-                    event.getGuild().retrieveMemberById(Long.parseLong(l[0])).queue(member -> {
-                        if(l[themePos] != "/") {
-                            member.modifyNickname(l[themePos]).queue();
+                    {
+                        try {
+                            event.getGuild().retrieveMemberById(Long.parseLong(l[0])).queue(member -> {
+                                if (!member.isOwner() && event.getGuild().getSelfMember().getRoles().get(0).getPosition() >= member.getRoles().get(0).getPosition() && l[themePos] != "/") {
+                                    member.modifyNickname(l[themePos]).queue();
+                                }
+                            });
+                        } catch (ErrorResponseException e) {
+                            System.out.println("Unknown Member");
                         }
-                    })
+                    }
             );
         } else {
             event.reply("Theme not found.").setEphemeral(true).queue();
@@ -92,12 +112,9 @@ public class MassRenameCommand extends Command {
         event.reply("Mass rename in progress " + LOADING_EMOTE + " (This may take a few seconds).\nWARNING: The bot cannot rename the server owner or users who have a role higher than its own.").setEphemeral(true).queue();
         return Outcome.SUCCESS;
     }
+
     @Override
     public SlashCommandData getCommandData() {
         return super.getCommandData().addOption(OptionType.STRING, "theme", "Name of the column from which you want to mass rename", false);
     }
-
-    private String[] headers = {};
-    private ArrayList<String[]> values = new ArrayList<String[]>();
-    private int themePos = 00;
 }

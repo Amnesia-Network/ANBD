@@ -29,7 +29,8 @@ public class Utils {
             longest = Math.max(longest, header.length());
         }
         for (String[] dataRow : data) {
-            if (headers.length != dataRow.length) throw new IllegalArgumentException("data row should be the same length as headers");
+            if (headers.length != dataRow.length)
+                throw new IllegalArgumentException("data row should be the same length as headers");
 
             for (String dataEntry : dataRow) {
                 longest = Math.max(longest, dataEntry.length());

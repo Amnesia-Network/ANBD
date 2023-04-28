@@ -26,6 +26,13 @@ dependencies {
     implementation 'com.github.walkyst:lavaplayer-fork:1.4.0'
     implementation 'net.sourceforge.htmlcleaner:htmlcleaner:2.26'
     implementation 'io.jsondb:jsondb-core:1.0.106'
+    implementation 'com.vlkan.rfos:rotating-fos:0.9.5'
+    implementation 'com.vlkan.rfos:rotating-fos:0.9.5'
+    implementation 'com.vlkan.rfos:rotating-fos:0.9.5'
+    implementation 'com.vlkan.rfos:rotating-fos:0.9.5'
+    implementation 'com.vlkan.rfos:rotating-fos:0.9.5'
+    implementation 'com.vlkan.rfos:rotating-fos:0.9.5'
+    implementation 'com.vlkan.rfos:rotating-fos:0.9.5'
 }
 
 test {
