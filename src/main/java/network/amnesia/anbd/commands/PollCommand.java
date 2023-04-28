@@ -27,7 +27,6 @@ public class PollCommand extends Command {
         }
         //PollBuilder JSON
         if (question.trim().charAt(0) == '{' && question.trim().charAt(question.length() - 1) == '}') {
-            // verify question is a valid JSON data TODO
             CustomPoll poll = new CustomPoll(question, change);
             Message message = event.replyEmbeds(poll.getEmbed()).complete().retrieveOriginal().complete();
             poll.setPollMessageId(message.getIdLong());
