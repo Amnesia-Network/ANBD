@@ -26,6 +26,7 @@ dependencies {
     implementation 'com.github.walkyst:lavaplayer-fork:1.4.3'
     implementation 'net.sourceforge.htmlcleaner:htmlcleaner:2.26'
     implementation 'io.jsondb:jsondb-core:1.0.106'
+    implementation 'org.jsoup:jsoup:1.16.1'
 }
 
 test {
