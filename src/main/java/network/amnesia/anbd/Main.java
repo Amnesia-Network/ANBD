@@ -14,6 +14,7 @@ import network.amnesia.anbd.command.CommandManager;
 import network.amnesia.anbd.configs.ConfigManager;
 import network.amnesia.anbd.factories.FactoryFactory;
 import network.amnesia.anbd.music.MusicManager;
+import network.amnesia.anbd.otism.RandomEvilInsultSender;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -47,6 +48,7 @@ public class Main {
     public static synchronized void JDAReady() {
         if (JDAReady.getCount() == 0) throw new IllegalStateException("Main#ready was already ready");
         JDAReady.countDown();
+        new RandomEvilInsultSender().start();
     }
 
     private static void load() {
