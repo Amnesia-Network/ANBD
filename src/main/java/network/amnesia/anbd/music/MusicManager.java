@@ -11,7 +11,10 @@ import com.sedmelluq.discord.lavaplayer.source.http.HttpAudioSourceManager;
 import com.sedmelluq.discord.lavaplayer.source.soundcloud.SoundCloudAudioSourceManager;
 import com.sedmelluq.discord.lavaplayer.source.twitch.TwitchStreamAudioSourceManager;
 import com.sedmelluq.discord.lavaplayer.source.vimeo.VimeoAudioSourceManager;
-import com.sedmelluq.discord.lavaplayer.source.youtube.YoutubeAudioSourceManager;
+import dev.lavalink.youtube.YoutubeAudioSourceManager;
+import dev.lavalink.youtube.clients.AndroidWithThumbnail;
+import dev.lavalink.youtube.clients.MusicWithThumbnail;
+import dev.lavalink.youtube.clients.WebWithThumbnail;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.channel.concrete.VoiceChannel;
 import net.dv8tion.jda.api.managers.AudioManager;
@@ -51,7 +54,7 @@ public class MusicManager {
     public static void registerSources() {
         AudioSourceManagers.registerLocalSource(Main.getAudioPlayerManager());
 
-        Main.getAudioPlayerManager().registerSourceManager(new YoutubeAudioSourceManager(true, Main.DOT_ENV.get("YOUTUBE_AUTH_EMAIL"), Main.DOT_ENV.get("YOUTUBE_AUTH_PASSWORD")));
+        Main.getAudioPlayerManager().registerSourceManager(new YoutubeAudioSourceManager(true, new MusicWithThumbnail(), new WebWithThumbnail(), new AndroidWithThumbnail()));
         Main.getAudioPlayerManager().registerSourceManager(SoundCloudAudioSourceManager.createDefault());
         Main.getAudioPlayerManager().registerSourceManager(new BandcampAudioSourceManager());
         Main.getAudioPlayerManager().registerSourceManager(new VimeoAudioSourceManager());

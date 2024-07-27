@@ -1,5 +1,15 @@
 package network.amnesia.anbd;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import org.jsoup.Jsoup;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 public class Utils {
     public static String formatTime(long duration) {
         if (duration == Long.MAX_VALUE) {
@@ -64,4 +74,23 @@ public class Utils {
         }
         return null;
     }
+
+
+    public static final ObjectMapper objectMapper = new ObjectMapper();
+
+    public static List<String> splitJsonObjects(String jsonString) throws JsonProcessingException {
+        JsonNode rootNode =  objectMapper.readTree(jsonString);
+
+        List<String> jsonObjects = new ArrayList<>();
+        if (rootNode.isArray()) {
+            ArrayNode arrayNode = (ArrayNode) rootNode;
+            for (JsonNode node: arrayNode) jsonObjects.add(objectMapper.writeValueAsString(node));
+        }
+        return jsonObjects;
+    }
+
+    public static String fetchRemote(String url) throws IOException {
+        return Jsoup.connect(url).ignoreContentType(true).get().body().ownText();
+    }
+
 }
